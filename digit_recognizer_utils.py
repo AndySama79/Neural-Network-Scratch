@@ -47,7 +47,7 @@ def sigmoid(Z: np.ndarray) -> np.ndarray:
     return 1 / (1 + np.exp(-Z)), Z
 
 def softmax(Z: np.ndarray) -> np.ndarray:
-    return np.exp(Z) / np.sum(np.exp(Z)), Z
+    return np.exp(Z) / np.sum(np.exp(Z) + 1e7), Z
 
 def linear_forward(A, W, b):
     Z = np.dot(W, A) + b
@@ -123,9 +123,9 @@ def update_parameters(params, grads, learning_rate):
     parameters = params.copy()
     L = len(parameters) // 2    # since pair of two (W1, b1), (W2, b2),...
 
-    for l in range(L+1):
-        parameters["W" + str(l)] = parameters["W" + str(l)] - learning_rate * grads["dW" + str(l)]
-        parameters["W" + str(l)] = parameters["W" + str(l)] - learning_rate * grads["dW" + str(l)]
+    for l in range(L):
+        parameters["W" + str(l+1)] = parameters["W" + str(l+1)] - learning_rate * grads["dW" + str(l+1)]
+        parameters["W" + str(l+1)] = parameters["W" + str(l+1)] - learning_rate * grads["dW" + str(l+1)]
     
     return parameters
 
