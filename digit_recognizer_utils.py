@@ -25,11 +25,11 @@ Y_test = test[0]
 X_test = test[1:n_x]
 X_test = X_test / 255
 
-print("X_train:", X_train)
-print("Y_train:", Y_train)
+print("X_train:", X_train.shape)
+print("Y_train:", Y_train.shape)
 # %%    Building a two-layer NN (activation->ReLU->activation->softmax)
 def initialize_parameters(n_x, n_h, n_y):
-    W1 = np.random.randn(n_h, n_x - 1) * 0.01
+    W1 = np.random.randn(n_h, n_x) * 0.01
     b1 = np.zeros((n_h, 1))
     W2 = np.random.randn(n_y, n_h) * 0.01
     b2 = np.zeros((n_y, 1))
@@ -41,7 +41,7 @@ def initialize_parameters(n_x, n_h, n_y):
     return parameters
 
 def relu(Z: np.ndarray) -> np.ndarray:
-    return np.max(0, Z), Z
+    return np.maximum(Z, 0), Z
 
 def sigmoid(Z: np.ndarray) -> np.ndarray:
     return 1 / (1 + np.exp(-Z)), Z
@@ -57,13 +57,13 @@ def linear_forward(A, W, b):
 
 def linear_activation_forward(A_prev, W, b, activation):
     if activation == "sigmoid":
-        Z, linear_cache = linear_forward(A_prev, W, b, activation)
+        Z, linear_cache = linear_forward(A_prev, W, b)
         A, activation_cache = sigmoid(Z)
     elif activation == "relu":
-        Z, linear_cache = linear_forward(A_prev, W, b, activation)
+        Z, linear_cache = linear_forward(A_prev, W, b)
         A, activation_cache = relu(Z)
     elif activation == "softmax":
-        Z, linear_cache = linear_forward(A_prev, W, b, activation)
+        Z, linear_cache = linear_forward(A_prev, W, b)
         A, activation_cache = softmax(Z)
     else:
         print(f"{activation} function not defined")
@@ -73,7 +73,7 @@ def linear_activation_forward(A_prev, W, b, activation):
     return A, cache
 
 def compute_cost(AL, Y):
-    m = Y.shape[1]
+    m = Y.shape[0]
 
     cost = -(1 / m) * (np.dot(Y, np.log(AL.T)) + np.dot(1 - Y, np.log(1 - AL.T)))
 
@@ -87,7 +87,7 @@ def d_relu(dA, activation_cache):
 
 def d_sigmoid(dA, activation_cache):
     Z = activation_cache
-    return dA * (Z(1 - Z))
+    return dA * (Z - np.power(Z, 2))
 
 def d_softmax(dA, activation_cache, Y=None):
     Z = activation_cache
