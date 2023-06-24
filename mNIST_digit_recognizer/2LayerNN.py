@@ -1,5 +1,5 @@
 #%%
-from digit_recognizer_utils import *
+from mNIST_digit_recognizer.digit_recognizer_utils import *
 
 #%%
 n_x = 784
