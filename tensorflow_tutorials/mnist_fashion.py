@@ -1,4 +1,10 @@
 # %%    Imports and Helper Libraries
+import os
+import logging
+logging.getLogger("tensorflow").setLevel(logging.ERROR)
+os.environ['KMP_AFFINITY'] = 'noverbose'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 import tensorflow as tf
 import tensorflow_datasets as tfds
 tfds.disable_progress_bar()
@@ -6,10 +12,6 @@ tfds.disable_progress_bar()
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-
-import logging
-logger = tf.get_logger()
-logger.setLevel(logging.ERROR)
 # %%    Import the Fashion MNIST dataset
 dataset, metadata = tfds.load('fashion_mnist', as_supervised=True, with_info=True)
 train_ds, test_ds = dataset['train'], dataset['test']
@@ -64,7 +66,8 @@ BATCH_SIZE = 32
 train_ds = train_ds.cache().repeat().shuffle(num_train_ex).batch(BATCH_SIZE)
 test_ds = test_ds.cache().batch(BATCH_SIZE)
 
-model.fit(train_ds, epochs=5, steps_per_epoch=math.ceil(num_train_ex/BATCH_SIZE))
+with tf.device('/gpu:0'):
+    model.fit(train_ds, epochs=5, steps_per_epoch=math.ceil(num_train_ex/BATCH_SIZE))
 # %%    Model Summary
 model.summary()
 # %%    Evaluate accuracy
