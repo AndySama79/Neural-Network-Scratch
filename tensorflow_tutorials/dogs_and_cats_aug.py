@@ -70,7 +70,23 @@ def plotImages(images_arr):
     plt.show()
 
 plotImages(sample_training_images[:5]) # Plot images 0-4
+#%% data augmentation
+image_gen = ImageDataGenerator(rescale=1./255,
+                               rotation_range=45,
+                               width_shift_range=0.2,
+                               height_shift_range=0.2,
+                               shear_range=0.2,
+                               zoom_range=0.2,
+                               horizontal_flip=True,
+                               fill_mode='nearest')
+train_data_gen = image_gen.flow_from_directory(batch_size=BATCH_SIZE,
+                                               directory=train_dir,
+                                               shuffle=True,
+                                               target_size=(IMG_SHAPE, IMG_SHAPE),
+                                               class_mode='binary')
 
+augmented_images = [train_data_gen[0][0][0] for i in range(5)]
+plotImages(augmented_images)
 # %% Model creation
 # define the model
 model = tf.keras.models.Sequential([
@@ -86,6 +102,7 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
     tf.keras.layers.MaxPooling2D(2, 2),
 
+    tf.keras.layers.Dropout(0.5),
     tf.keras.layers.Flatten(),
     tf.keras.layers.Dense(512, activation='relu'),
     tf.keras.layers.Dense(2)
