@@ -6,7 +6,7 @@ n_x = 784
 n_h = 10
 n_y = 1
 layers_dims = (n_x, n_h, n_y)
-learning_rate = 0.0075
+learning_rate = 0.001
 
 def two_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, print_cost=False):
 

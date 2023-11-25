@@ -65,6 +65,7 @@ model = tf.keras.Sequential([
 model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(),
               metrics=['accuracy'])
+model.summary()
 # %%    Train the model
 BATCH_SIZE = 32
 train_ds = train_ds.cache().repeat().shuffle(num_train_ex).batch(BATCH_SIZE)
