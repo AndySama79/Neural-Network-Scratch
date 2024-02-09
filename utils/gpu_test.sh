@@ -4,7 +4,7 @@ conda init
 
 # activate conda environment containing tensorflow
 conda activate tiramisu
-python -c "import tensorflow as tf; tf.config.list_physical_devices())"
+python -c "import tensorflow as tf; tf.config.list_physical_devices()"
 
 # deactivate the env
 conda deactivate
