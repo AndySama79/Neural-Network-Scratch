@@ -71,8 +71,8 @@ BATCH_SIZE = 32
 train_ds = train_ds.cache().repeat().shuffle(num_train_ex).batch(BATCH_SIZE)
 test_ds = test_ds.cache().batch(BATCH_SIZE)
 
-with tf.device('/gpu:0'):
-    model.fit(train_ds, epochs=10, steps_per_epoch=math.ceil(num_train_ex/BATCH_SIZE))
+#with tf.device('/gpu:0'):
+model.fit(train_ds, epochs=10, steps_per_epoch=math.ceil(num_train_ex/BATCH_SIZE))
 # %%    Model Summary
 model.summary()
 # %%    Evaluate accuracy
