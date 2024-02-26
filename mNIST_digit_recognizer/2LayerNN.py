@@ -26,10 +26,11 @@ def two_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000
 
         A1, cache1 = linear_activation_forward(X, W1, b1, "relu")
         A2, cache2 = linear_activation_forward(A1, W2, b2, "softmax")
-
+        # print(8*"_")
+        # print(A2.shape, Y.shape)
         cost = compute_cost(A2, Y)
 
-        dA2 = -(np.divide(Y, A2) - np.divide(1-Y, 1-A2))
+        dA2 = -(np.divide(Y, A2+1e9) - np.divide(1-Y, 1-A2+1e9))
 
         dA1, dW2, db2 = linear_activation_backward(dA2, cache2, "softmax", Y_train)
         dA0, dW1, db1 = linear_activation_backward(dA1, cache1, "relu")
@@ -53,7 +54,7 @@ def two_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000
 
     return parameters, costs
 #%%
-parameters, costs = two_layer_model(X_train, Y_train, layers_dims=(n_x, n_h, n_y), num_iterations=2, print_cost=False)
+parameters, costs = two_layer_model(X_train, Y_train, layers_dims=(n_x, n_h, n_y), num_iterations=1000, print_cost=False)
 
 print("Cost after first iteration: " + str(costs[0]))
 

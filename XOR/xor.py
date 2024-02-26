@@ -2,15 +2,18 @@ from dense import Dense
 from utils import TanH, Sigmoid, Relu
 from losses import mse, mse_prime
 import numpy as np
+import pandas as pd
 
-X = np.reshape([[0, 0], [0, 1], [1, 0], [1, 1]], (4, 2, 1))
-Y = np.reshape([[0], [1], [1], [0]], (4, 1, 1))
+train = pd.read_csv("../mNIST_digit_recognizer/data/digit-recognizer/train.csv")
+
+Y = train['label'].to_numpy()
+X = train.drop(['label'], axis=1).to_numpy() / 255
 
 network = [
-    Dense(2, 3),
-    TanH(),
-    Dense(3, 1),
-    TanH()
+    Dense(784, 10),
+    Relu(),
+    Dense(10, 1),
+    Sigmoid()
 ]
 
 epochs = 10000

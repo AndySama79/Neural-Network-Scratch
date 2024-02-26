@@ -75,7 +75,7 @@ def linear_activation_forward(A_prev, W, b, activation):
 def compute_cost(AL, Y):
     m = Y.shape[0]
 
-    cost = -(1 / m) * (np.dot(Y, np.log(AL.T)) + np.dot(1 - Y, np.log(1 - AL.T)))
+    cost = -(1 / m) * (np.dot(Y, np.log(AL.T+1e9)) + np.dot(1 - Y, np.log(1 - AL.T + 1e9)))
 
     cost = np.squeeze(cost)
 
@@ -83,7 +83,7 @@ def compute_cost(AL, Y):
 
 def d_relu(dA, activation_cache):
     Z = activation_cache
-    return dA * (Z > 0)
+    return dA * (np.where(Z, 1, 0))
 
 def d_sigmoid(dA, activation_cache):
     Z = activation_cache
@@ -111,7 +111,7 @@ def linear_activation_backward(dA, cache, activation, Y=None):
         dZ = d_sigmoid(dA, activation_cache)
         dA_prev, dW, db = linear_backward(dZ, linear_cache)
     elif activation == "relu":
-        dZ = d_sigmoid(dA, activation_cache)
+        dZ = d_relu(dA, activation_cache)
         dA_prev, dW, db = linear_backward(dZ, linear_cache)
     elif activation == "softmax":
         dZ = d_softmax(dA, activation_cache, Y)
@@ -125,7 +125,7 @@ def update_parameters(params, grads, learning_rate):
 
     for l in range(L):
         parameters["W" + str(l+1)] = parameters["W" + str(l+1)] - learning_rate * grads["dW" + str(l+1)]
-        parameters["W" + str(l+1)] = parameters["W" + str(l+1)] - learning_rate * grads["dW" + str(l+1)]
+        parameters["b" + str(l+1)] = parameters["b" + str(l+1)] - learning_rate * grads["db" + str(l+1)]
     
     return parameters
 

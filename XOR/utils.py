@@ -21,3 +21,10 @@ class Relu(Activation):
         relu = lambda x: np.maximum(x, 0)
         relu_prime = lambda x: x > 0
         super().__init__(relu, relu_prime)
+
+#* Softmax
+class Softmax(Activation):
+    def __init__(self):
+        softmax = lambda x: np.exp(x) / np.sum(np.exp(x))
+        softmax_prime = lambda x: softmax(x) * (1 - softmax(x))
+        super().__init__(softmax, softmax_prime)
