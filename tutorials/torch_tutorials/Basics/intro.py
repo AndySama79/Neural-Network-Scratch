@@ -1,10 +1,12 @@
 import torch
+import os
 from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 
 # download training data from open datsets
+root = "data"
 training_data = datasets.FashionMNIST(
         root="data",
         train=True,
@@ -129,5 +131,5 @@ print("Done!")
 
 # save models
 # serialize the internal state dictionary
-torch.save(model.state_dict(), "model.pth")
+torch.save(model.state_dict(), os.path.join(root, "model.pth"))
 print("Saved PyTorch Model State to model.pth")
