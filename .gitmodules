@@ -1,0 +1,3 @@
+[submodule "small-object-detection"]
+	path = small-object-detection
+	url = git@github.com:andysama79/small-object-detection.git
