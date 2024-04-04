@@ -1,7 +1,6 @@
 from dense import Dense
-from utils import TanH, Sigmoid, Relu
+from utils import Sigmoid, Relu
 from losses import mse, mse_prime
-import numpy as np
 import pandas as pd
 
 train = pd.read_csv("../mNIST_digit_recognizer/data/digit-recognizer/train.csv")

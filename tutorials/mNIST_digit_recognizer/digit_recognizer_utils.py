@@ -2,7 +2,6 @@
 import os
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 # %%    load data
 data_path = "data/digit-recognizer"
 train_path = os.path.join(data_path, "train.csv")
